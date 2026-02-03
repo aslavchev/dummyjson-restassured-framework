@@ -21,6 +21,9 @@ jobs:
           cache: maven
 
       - name: Run tests
+        env:
+          API_USERNAME: ${{ secrets.API_USERNAME }}
+          API_PASSWORD: ${{ secrets.API_PASSWORD }}
         run: mvn clean test
 
       - name: Upload Allure results

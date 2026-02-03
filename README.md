@@ -1,36 +1,101 @@
 # DummyJSON REST Assured Framework
 
-![CI](https://github.com/aslavchev/dummyjson-restassured-framework/actions/workflows/ci.yml/badge.svg)
+[![CI](https://github.com/aslavchev/dummyjson-restassured-framework/actions/workflows/ci.yml/badge.svg)](https://github.com/aslavchev/dummyjson-restassured-framework/actions/workflows/ci.yml)
+[![Java](https://img.shields.io/badge/Java-21-orange)](https://openjdk.org/)
+[![REST Assured](https://img.shields.io/badge/REST%20Assured-5.5.7-green)](https://rest-assured.io/)
+[![TestNG](https://img.shields.io/badge/TestNG-7.12-blue)](https://testng.org/)
 
 API test automation framework for [DummyJSON](https://dummyjson.com/) using REST Assured and TestNG.
 
 ## Quick Start
 
 ```bash
-# Clone the repository
+# Clone repository
 git clone https://github.com/aslavchev/dummyjson-restassured-framework.git
 cd dummyjson-restassured-framework
 
+# Configure credentials
+cp .env.example .env
+
 # Run tests
 mvn clean test
+
+# Run smoke tests only
+mvn test -Dgroups=smoke
+
+# Generate Allure report
+mvn allure:serve
 ```
-
-## Tech Stack
-
-- **Java 21**
-- **REST Assured** - API testing
-- **TestNG** - Test framework
-- **Allure** - Reporting
-- **Maven** - Build tool
 
 ## Project Structure
 
 ```
 src/
 ├── main/java/com/dummyjson/
-│   └── config/          # API configuration
+│   └── config/
+│       └── ApiConfig.java        # Environment configuration
+│
 └── test/java/com/dummyjson/
-    ├── tests/           # Test classes
-    ├── listeners/       # TestNG listeners
-    └── testdata/        # Test data
+    ├── tests/
+    │   └── BaseApiTest.java      # REST Assured setup
+    ├── listeners/
+    │   └── TestListener.java     # Test lifecycle logging
+    └── testdata/
+        └── TestCredentials.java  # Test user credentials
 ```
+
+## Tech Stack
+
+| Technology | Purpose |
+|------------|---------|
+| Java 21 | Language |
+| REST Assured 5.5.7 | API testing |
+| TestNG 7.12.0 | Test framework |
+| Allure 2.32.0 | Test reporting |
+| Maven | Build tool |
+| GitHub Actions | CI/CD |
+
+## Configuration
+
+Create a `.env` file from the example:
+
+```bash
+cp .env.example .env
+```
+
+Required variables:
+
+```env
+API_USERNAME=emilys
+API_PASSWORD=emilyspass
+```
+
+Optional overrides:
+
+```env
+API_BASE_URL=https://dummyjson.com
+API_CONNECTION_TIMEOUT=10000
+API_READ_TIMEOUT=10000
+API_LOG_REQUESTS=true
+```
+
+## Test Users
+
+| User | Purpose |
+|------|---------|
+| `emilys` | Primary test user (from config) |
+| `michaelw` | Secondary user for multi-user tests |
+| `invalid_user` | Negative testing |
+
+## CI/CD
+
+Tests run automatically on:
+- Push to `main`
+- Pull requests to `main`
+
+Artifacts: Allure results
+
+---
+
+**Author:** Alex Slavchev
+**Website:** [aslavchev.com](https://aslavchev.com)
