@@ -28,12 +28,12 @@ public enum TestCredentials {
     /**
      * Invalid credentials for negative testing.
      */
-    INVALID("invalid_user", "wrong_password"),
+    INVALID_USER("invalid_user", "wrong_password"),
 
     /**
      * Empty credentials for validation testing.
      */
-    EMPTY("", "");
+    EMPTY_USER("", "");
 
     private final String username;
     private final String password;
