@@ -16,6 +16,7 @@ target/
 # Allure results
 allure-results/
 allure-report/
+.allure/
 
 # OS
 .DS_Store

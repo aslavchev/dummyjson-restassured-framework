@@ -1,6 +1,7 @@
 # DummyJSON REST Assured Framework
 
 [![CI](https://github.com/aslavchev/dummyjson-restassured-framework/actions/workflows/ci.yml/badge.svg)](https://github.com/aslavchev/dummyjson-restassured-framework/actions/workflows/ci.yml)
+[![Allure Report](https://img.shields.io/badge/Allure%20Report-Live-brightgreen)](https://aslavchev.github.io/dummyjson-restassured-framework/)
 [![Java](https://img.shields.io/badge/Java-21-orange)](https://openjdk.org/)
 [![REST Assured](https://img.shields.io/badge/REST%20Assured-5.5.7-green)](https://rest-assured.io/)
 [![TestNG](https://img.shields.io/badge/TestNG-7.12-blue)](https://testng.org/)
