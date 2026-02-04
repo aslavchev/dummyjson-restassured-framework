@@ -1,5 +1,6 @@
 package com.dummyjson.tests;
 
+import com.dummyjson.config.Endpoints;
 import com.dummyjson.helpers.AuthHelper;
 import com.dummyjson.testdata.TestCredentials;
 import io.qameta.allure.Description;
@@ -28,7 +29,7 @@ public class LoginTests extends BaseApiTest {
                 .spec(requestSpec)
                 .body(requestBody)
         .when()
-                .post(AuthHelper.LOGIN_ENDPOINT)
+                .post(Endpoints.LOGIN)
         .then()
                 .statusCode(200)
                 .body("accessToken", notNullValue())
@@ -50,7 +51,7 @@ public class LoginTests extends BaseApiTest {
                 .spec(requestSpec)
                 .body(requestBody)
         .when()
-                .post(AuthHelper.LOGIN_ENDPOINT)
+                .post(Endpoints.LOGIN)
         .then()
                 .statusCode(400)
                 .body("message", notNullValue());
@@ -67,7 +68,7 @@ public class LoginTests extends BaseApiTest {
                 .spec(requestSpec)
                 .body(requestBody)
         .when()
-                .post(AuthHelper.LOGIN_ENDPOINT)
+                .post(Endpoints.LOGIN)
         .then()
                 .statusCode(400)
                 .body("message", notNullValue());

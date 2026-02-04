@@ -1,6 +1,7 @@
 package com.dummyjson.helpers;
 
 import com.dummyjson.config.ApiConfig;
+import com.dummyjson.config.Endpoints;
 import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 
@@ -11,7 +12,6 @@ import static io.restassured.RestAssured.given;
  */
 public class AuthHelper {
 
-    public static final String LOGIN_ENDPOINT = "/auth/login";
     public static final String BEARER_PREFIX = "Bearer ";
 
     @Step("Build login request body for user: {username}")
@@ -26,7 +26,7 @@ public class AuthHelper {
                 .contentType(ContentType.JSON)
                 .body(buildLoginBody(username, password))
             .when()
-                .post(LOGIN_ENDPOINT)
+                .post(Endpoints.LOGIN)
             .then()
                 .statusCode(200)
                 .extract()

@@ -1,5 +1,6 @@
 package com.dummyjson.tests;
 
+import com.dummyjson.config.Endpoints;
 import com.dummyjson.helpers.AuthHelper;
 import com.dummyjson.testdata.TestCredentials;
 import io.qameta.allure.Description;
@@ -13,8 +14,6 @@ import static org.hamcrest.Matchers.notNullValue;
  * Tests for token validation and authenticated session endpoints.
  */
 public class AuthMeTests extends BaseApiTest {
-
-    private static final String ME_ENDPOINT = "/auth/me";
 
     @Test(groups = {"smoke"})
     @Description("Verify valid token grants access to current user endpoint")
@@ -30,7 +29,7 @@ public class AuthMeTests extends BaseApiTest {
                 .spec(requestSpec)
                 .header("Authorization", AuthHelper.BEARER_PREFIX + accessToken)
         .when()
-                .get(ME_ENDPOINT)
+                .get(Endpoints.AUTH_ME)
         .then()
                 .statusCode(200)
                 .body("id", notNullValue())
@@ -44,7 +43,7 @@ public class AuthMeTests extends BaseApiTest {
         given()
                 .spec(requestSpec)
         .when()
-                .get(ME_ENDPOINT)
+                .get(Endpoints.AUTH_ME)
         .then()
                 .statusCode(401)
                 .body("message", notNullValue());
