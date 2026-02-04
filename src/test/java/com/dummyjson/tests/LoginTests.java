@@ -9,9 +9,10 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
+/**
+ * Tests for authentication login functionality.
+ */
 public class LoginTests extends BaseApiTest {
-
-    private static final String LOGIN_ENDPOINT = "/auth/login";
 
     @Test(groups = {"smoke"})
     @Description("Verify valid login returns 200 with tokens")
@@ -27,7 +28,7 @@ public class LoginTests extends BaseApiTest {
                 .spec(requestSpec)
                 .body(requestBody)
         .when()
-                .post(LOGIN_ENDPOINT)
+                .post(AuthHelper.LOGIN_ENDPOINT)
         .then()
                 .statusCode(200)
                 .body("accessToken", notNullValue())
@@ -49,7 +50,7 @@ public class LoginTests extends BaseApiTest {
                 .spec(requestSpec)
                 .body(requestBody)
         .when()
-                .post(LOGIN_ENDPOINT)
+                .post(AuthHelper.LOGIN_ENDPOINT)
         .then()
                 .statusCode(400)
                 .body("message", notNullValue());
@@ -66,7 +67,7 @@ public class LoginTests extends BaseApiTest {
                 .spec(requestSpec)
                 .body(requestBody)
         .when()
-                .post(LOGIN_ENDPOINT)
+                .post(AuthHelper.LOGIN_ENDPOINT)
         .then()
                 .statusCode(400)
                 .body("message", notNullValue());
