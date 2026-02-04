@@ -28,21 +28,37 @@ mvn test -Dgroups=smoke
 mvn allure:serve
 ```
 
+## Test Coverage
+
+| Class | Tests | Endpoint |
+|-------|-------|----------|
+| LoginTests | 3 | POST /auth/login |
+| AuthMeTests | 2 | GET /auth/me |
+| ProductTests | 7 | GET/POST/PUT/DELETE /products |
+| **Total** | **12** | |
+
 ## Project Structure
 
 ```
 src/
 ├── main/java/com/dummyjson/
 │   └── config/
-│       └── ApiConfig.java        # Environment configuration
+│       └── ApiConfig.java          # Environment configuration
 │
 └── test/java/com/dummyjson/
+    ├── config/
+    │   └── Endpoints.java          # API endpoint constants
+    ├── helpers/
+    │   └── AuthHelper.java         # Authentication utilities
     ├── tests/
-    │   └── BaseApiTest.java      # REST Assured setup
+    │   ├── BaseApiTest.java        # REST Assured setup
+    │   ├── LoginTests.java         # Login endpoint tests
+    │   ├── AuthMeTests.java        # Token validation tests
+    │   └── ProductTests.java       # Products CRUD tests
     ├── listeners/
-    │   └── TestListener.java     # Test lifecycle logging
+    │   └── TestListener.java       # Test lifecycle logging
     └── testdata/
-        └── TestCredentials.java  # Test user credentials
+        └── TestCredentials.java    # Test user credentials
 ```
 
 ## Tech Stack
