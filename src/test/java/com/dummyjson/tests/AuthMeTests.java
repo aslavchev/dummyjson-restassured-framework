@@ -1,12 +1,11 @@
 package com.dummyjson.tests;
 
-import com.dummyjson.config.Endpoints;
-import com.dummyjson.helpers.AuthHelper;
+import com.dummyjson.clients.AuthClient;
 import com.dummyjson.testdata.TestCredentials;
 import io.qameta.allure.Description;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
@@ -15,21 +14,24 @@ import static org.hamcrest.Matchers.notNullValue;
  */
 public class AuthMeTests extends BaseApiTest {
 
+    private AuthClient authClient;
+
+    @BeforeClass(alwaysRun = true)
+    public void setupClients() {
+        authClient = new AuthClient(requestSpec);
+    }
+
     @Test(groups = {"smoke"})
     @Description("Verify valid token grants access to current user endpoint")
     public void testValidTokenReturnsUser() {
         // Arrange
-        String accessToken = AuthHelper.getAccessToken(
+        String accessToken = authClient.getAccessToken(
                 TestCredentials.VALID_USER.username(),
                 TestCredentials.VALID_USER.password()
         );
 
         // Act & Assert
-        given()
-                .spec(requestSpec)
-                .header("Authorization", AuthHelper.BEARER_PREFIX + accessToken)
-        .when()
-                .get(Endpoints.AUTH_ME)
+        authClient.getAuthMe(accessToken)
         .then()
                 .statusCode(200)
                 .body("id", notNullValue())
@@ -39,11 +41,8 @@ public class AuthMeTests extends BaseApiTest {
     @Test(groups = {"smoke"})
     @Description("Verify missing token returns 401 Unauthorized")
     public void testMissingTokenReturns401() {
-        // Act & Assert - no token
-        given()
-                .spec(requestSpec)
-        .when()
-                .get(Endpoints.AUTH_ME)
+        // Act & Assert
+        authClient.getAuthMeWithoutToken()
         .then()
                 .statusCode(401)
                 .body("message", notNullValue());
