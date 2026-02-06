@@ -1,10 +1,11 @@
 package com.dummyjson.tests;
 
-import com.dummyjson.config.Endpoints;
+import com.dummyjson.clients.ProductClient;
+import com.dummyjson.models.Product;
 import io.qameta.allure.Description;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 /**
@@ -12,14 +13,21 @@ import static org.hamcrest.Matchers.*;
  */
 public class ProductTests extends BaseApiTest {
 
+    private static final int INVALID_PRODUCT_ID = 99999;
+    private ProductClient productClient;
+
+    @BeforeClass(alwaysRun = true)
+    public void setupClients() {
+        productClient = new ProductClient(requestSpec);
+    }
+
+    // ============ READ OPERATIONS ============
+
     @Test(groups = {"smoke"})
     @Description("Verify get all products returns 200")
     public void testGetAllProductsReturns200() {
         // Act & Assert
-        given()
-                .spec(requestSpec)
-        .when()
-                .get(Endpoints.PRODUCTS)
+        productClient.getAllProducts()
         .then()
                 .statusCode(200)
                 .body("products", notNullValue())
@@ -30,10 +38,7 @@ public class ProductTests extends BaseApiTest {
     @Description("Verify get product by ID returns 200")
     public void testGetProductByIdReturns200() {
         // Act & Assert
-        given()
-                .spec(requestSpec)
-        .when()
-                .get(Endpoints.PRODUCTS + "/1")
+        productClient.getProductById(1)
         .then()
                 .statusCode(200)
                 .body("id", equalTo(1))
@@ -44,10 +49,7 @@ public class ProductTests extends BaseApiTest {
     @Description("Verify get product by invalid ID returns 404")
     public void testGetProductByInvalidIdReturns404() {
         // Act & Assert
-        given()
-                .spec(requestSpec)
-        .when()
-                .get(Endpoints.PRODUCTS + "/99999")
+        productClient.getProductById(INVALID_PRODUCT_ID)
         .then()
                 .statusCode(404)
                 .body("message", notNullValue());
@@ -57,10 +59,7 @@ public class ProductTests extends BaseApiTest {
     @Description("Verify search products returns results")
     public void testSearchProductsReturnsResults() {
         // Act & Assert
-        given()
-                .spec(requestSpec)
-        .when()
-                .get(Endpoints.PRODUCTS + "/search?q=laptop")
+        productClient.searchProducts("laptop")
         .then()
                 .statusCode(200)
                 .body("products", notNullValue());
@@ -72,33 +71,24 @@ public class ProductTests extends BaseApiTest {
     @Description("Verify add product returns 201")
     public void testAddProductReturns201() {
         // Arrange
-        String requestBody = "{\"title\":\"Test Product\",\"price\":99}";
+        Product product = new Product("Test Product", 99);
 
         // Act & Assert
-        given()
-                .spec(requestSpec)
-                .body(requestBody)
-        .when()
-                .post(Endpoints.PRODUCTS + "/add")
+        productClient.addProduct(product)
         .then()
                 .statusCode(201)
                 .body("id", notNullValue())
                 .body("title", equalTo("Test Product"));
-
     }
 
     @Test(groups = {"smoke"})
     @Description("Verify update product returns 200")
     public void testUpdateProductReturns200() {
         // Arrange
-        String requestBody = "{\"title\":\"Updated Title\"}";
+        Product product = new Product("Updated Title", null);
 
         // Act & Assert
-        given()
-                .spec(requestSpec)
-                .body(requestBody)
-        .when()
-                .put(Endpoints.PRODUCTS + "/1")
+        productClient.updateProduct(1, product)
         .then()
                 .statusCode(200)
                 .body("title", equalTo("Updated Title"));
@@ -108,13 +98,9 @@ public class ProductTests extends BaseApiTest {
     @Description("Verify delete product returns 200")
     public void testDeleteProductReturns200() {
         // Act & Assert
-        given()
-                .spec(requestSpec)
-        .when()
-                .delete(Endpoints.PRODUCTS + "/1")
+        productClient.deleteProduct(1)
         .then()
                 .statusCode(200)
                 .body("isDeleted", equalTo(true));
     }
-
 }
