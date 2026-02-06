@@ -42,14 +42,16 @@ mvn allure:serve
 ```
 src/
 ├── main/java/com/dummyjson/
-│   └── config/
-│       └── ApiConfig.java          # Environment configuration
+│   ├── config/
+│   │   ├── ApiConfig.java          # Environment configuration
+│   │   └── Endpoints.java          # API endpoint constants
+│   ├── clients/
+│   │   ├── AuthClient.java         # Auth API client (/auth/*)
+│   │   └── ProductClient.java      # Products API client (/products/*)
+│   └── models/
+│       └── Product.java            # Product request POJO
 │
 └── test/java/com/dummyjson/
-    ├── config/
-    │   └── Endpoints.java          # API endpoint constants
-    ├── helpers/
-    │   └── AuthHelper.java         # Authentication utilities
     ├── tests/
     │   ├── BaseApiTest.java        # REST Assured setup
     │   ├── LoginTests.java         # Login endpoint tests
