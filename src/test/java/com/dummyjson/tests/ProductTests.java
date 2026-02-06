@@ -13,6 +13,8 @@ import static org.hamcrest.Matchers.*;
  */
 public class ProductTests extends BaseApiTest {
 
+    private static final int VALID_PRODUCT_ID = 18;
+    private static final int MUTABLE_PRODUCT_ID = 1;
     private static final int INVALID_PRODUCT_ID = 99999;
     private ProductClient productClient;
 
@@ -30,18 +32,18 @@ public class ProductTests extends BaseApiTest {
         productClient.getAllProducts()
         .then()
                 .statusCode(200)
-                .body("products", notNullValue())
-                .body("total", notNullValue());
+                .body("products.size()", greaterThan(0))
+                .body("total", greaterThan(0));
     }
 
     @Test(groups = {"smoke"})
     @Description("Verify get product by ID returns 200")
     public void testGetProductByIdReturns200() {
         // Act & Assert
-        productClient.getProductById(1)
+        productClient.getProductById(VALID_PRODUCT_ID)
         .then()
                 .statusCode(200)
-                .body("id", equalTo(1))
+                .body("id", equalTo(VALID_PRODUCT_ID))
                 .body("title", notNullValue());
     }
 
@@ -52,7 +54,7 @@ public class ProductTests extends BaseApiTest {
         productClient.getProductById(INVALID_PRODUCT_ID)
         .then()
                 .statusCode(404)
-                .body("message", notNullValue());
+                .body("message", equalTo("Product with id '" + INVALID_PRODUCT_ID + "' not found"));
     }
 
     @Test(groups = {"smoke"})
@@ -62,7 +64,9 @@ public class ProductTests extends BaseApiTest {
         productClient.searchProducts("laptop")
         .then()
                 .statusCode(200)
-                .body("products", notNullValue());
+                .body("products.size()", greaterThan(0))
+                .body("total", greaterThan(0))
+                .body("products[0].category", equalTo("laptops"));
     }
 
     // ============ WRITE OPERATIONS ============
@@ -77,7 +81,7 @@ public class ProductTests extends BaseApiTest {
         productClient.addProduct(product)
         .then()
                 .statusCode(201)
-                .body("id", notNullValue())
+                .body("id", greaterThan(0))
                 .body("title", equalTo("Test Product"));
     }
 
@@ -88,9 +92,10 @@ public class ProductTests extends BaseApiTest {
         Product product = new Product("Updated Title", null);
 
         // Act & Assert
-        productClient.updateProduct(1, product)
+        productClient.updateProduct(MUTABLE_PRODUCT_ID, product)
         .then()
                 .statusCode(200)
+                .body("id", equalTo(MUTABLE_PRODUCT_ID))
                 .body("title", equalTo("Updated Title"));
     }
 
@@ -98,9 +103,10 @@ public class ProductTests extends BaseApiTest {
     @Description("Verify delete product returns 200")
     public void testDeleteProductReturns200() {
         // Act & Assert
-        productClient.deleteProduct(1)
+        productClient.deleteProduct(MUTABLE_PRODUCT_ID)
         .then()
                 .statusCode(200)
+                .body("id", equalTo(MUTABLE_PRODUCT_ID))
                 .body("isDeleted", equalTo(true));
     }
 }

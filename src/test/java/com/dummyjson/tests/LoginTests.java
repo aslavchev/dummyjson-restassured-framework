@@ -46,7 +46,7 @@ public class LoginTests extends BaseApiTest {
         )
         .then()
                 .statusCode(400)
-                .body("message", notNullValue());
+                .body("message", equalTo("Invalid credentials"));
     }
 
     @Test(groups = {"smoke"})
@@ -56,6 +56,6 @@ public class LoginTests extends BaseApiTest {
         authClient.loginWithBody("{}")
         .then()
                 .statusCode(400)
-                .body("message", notNullValue());
+                .body("message", equalTo("Username and password required"));
     }
 }

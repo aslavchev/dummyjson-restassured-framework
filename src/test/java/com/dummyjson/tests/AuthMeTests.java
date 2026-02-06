@@ -45,6 +45,6 @@ public class AuthMeTests extends BaseApiTest {
         authClient.getAuthMeWithoutToken()
         .then()
                 .statusCode(401)
-                .body("message", notNullValue());
+                .body("message", equalTo("Access Token is required"));
     }
 }
