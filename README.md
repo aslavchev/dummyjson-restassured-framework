@@ -106,6 +106,11 @@ API_LOG_REQUESTS=true
 | `michaelw` | Secondary user for multi-user tests |
 | `invalid_user` | Negative testing |
 
+## Documentation
+
+- [Architecture Decision Records](docs/adr/) — why REST Assured, why DummyJSON, client layer pattern, token management
+- [Test Strategy](docs/TEST-STRATEGY.md) — coverage decisions, what's tested, what's not
+
 ## CI/CD
 
 Tests run automatically on:
