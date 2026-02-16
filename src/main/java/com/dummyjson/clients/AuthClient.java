@@ -9,7 +9,7 @@ import static io.restassured.RestAssured.given;
 
 /**
  * API client for authentication endpoints.
- * Encapsulates HTTP calls to /auth/login and /auth/me.
+ * Encapsulates HTTP calls to /auth/login, /auth/me, and /auth/refresh.
  */
 public class AuthClient {
 
@@ -91,5 +91,19 @@ public class AuthClient {
 
     private String buildLoginBody(String username, String password) {
         return String.format("{\"username\":\"%s\",\"password\":\"%s\"}", username, password);
+    }
+
+    /**
+     * @param refreshToken valid refresh token from login response
+     * @param expiresInMins how long the new access token should last
+     * @return Response from POST /auth/refresh
+     */
+    @Step("Refresh session with refresh token")
+    public Response refreshSession(String refreshToken, int expiresInMins) {
+        return given()
+                .spec(requestSpec)
+                .body(String.format("{\"refreshToken\":\"%s\",\"expiresInMins\":%d}", refreshToken, expiresInMins))
+            .when()
+                .post(Endpoints.AUTH_REFRESH);
     }
 }

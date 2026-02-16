@@ -14,12 +14,13 @@ This document outlines the test strategy for the DummyJSON REST Assured Framewor
 
 ## Endpoint Coverage
 
-### Authentication (5 tests)
+### Authentication (8 tests)
 
 | Endpoint | Method | Tests | What's Verified |
 |----------|--------|-------|-----------------|
 | `/auth/login` | POST | 3 | Valid login returns tokens, invalid credentials return 400, empty body returns 400 |
 | `/auth/me` | GET | 2 | Valid token returns user data, missing token returns 401 |
+| `/auth/refresh` | POST | 3 | Valid refresh returns new tokens, invalid token returns 403, refreshed token is usable |
 
 ### Products (7 tests)
 
@@ -32,12 +33,13 @@ This document outlines the test strategy for the DummyJSON REST Assured Framewor
 | `/products/{id}` | PUT | 1 | Update returns 200 with modified fields |
 | `/products/{id}` | DELETE | 1 | Delete returns 200 with isDeleted flag |
 
-**Total: 12 tests across 3 test classes**
+**Total: 15 tests across 4 test classes**
 
 ## What's Tested
 
 - **Happy path** — valid login, valid tokens, successful CRUD
-- **Error handling** — invalid credentials, missing tokens, non-existent resources
+- **Token lifecycle** — login, refresh, and proof that refreshed tokens work on protected endpoints
+- **Error handling** — invalid credentials, missing tokens, invalid refresh tokens, non-existent resources
 - **Response structure** — status codes, field presence, correct values
 - **HTTP methods** — GET, POST, PUT, DELETE
 
@@ -47,7 +49,7 @@ This document outlines the test strategy for the DummyJSON REST Assured Framewor
 |-----|--------|
 | **Data persistence** | DummyJSON simulates CRUD — POST/PUT/DELETE return expected responses but don't modify the database. Tests validate response structure, not database state |
 | **Rate limiting** | Not relevant for a demo API |
-| **Refresh token flow** | Login returns a refresh token, but the refresh endpoint isn't exercised. Could add in future |
+| **Data-driven login** | Multiple credential combinations could be tested with @DataProvider — currently one valid/one invalid |
 | **Pagination** | Products endpoint supports pagination parameters but not currently tested |
 | **Performance / load** | Requires separate tooling, different skill set |
 | **Schema validation** | Considered but not implemented — would require maintaining JSON schema files |

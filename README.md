@@ -34,8 +34,9 @@ mvn allure:serve
 |-------|-------|----------|
 | LoginTests | 3 | POST /auth/login |
 | AuthMeTests | 2 | GET /auth/me |
+| RefreshTokenTests | 3 | POST /auth/refresh |
 | ProductTests | 7 | GET/POST/PUT/DELETE /products |
-| **Total** | **12** | |
+| **Total** | **15** | |
 
 ## Project Structure
 
@@ -56,6 +57,7 @@ src/
     │   ├── BaseApiTest.java        # REST Assured setup
     │   ├── LoginTests.java         # Login endpoint tests
     │   ├── AuthMeTests.java        # Token validation tests
+    │   ├── RefreshTokenTests.java  # Refresh token lifecycle tests
     │   └── ProductTests.java       # Products CRUD tests
     ├── listeners/
     │   └── TestListener.java       # Test lifecycle logging
