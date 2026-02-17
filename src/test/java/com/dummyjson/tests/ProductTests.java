@@ -69,6 +69,17 @@ public class ProductTests extends BaseApiTest {
                 .body("products[0].category", equalTo("laptops"));
     }
 
+    @Test(groups = {"regression"})
+    @Description("Verify search with no matching products returns empty results")
+    public void testSearchNonExistentProductReturnsEmpty() {
+        // Act & Assert
+        productClient.searchProducts("nonexistentproduct12345")
+        .then()
+                .statusCode(200)
+                .body("products.size()", equalTo(0))
+                .body("total", equalTo(0));
+    }
+
     // ============ WRITE OPERATIONS ============
 
     @Test(groups = {"smoke"})
