@@ -32,11 +32,11 @@ mvn allure:serve
 
 | Class | Tests | Endpoint |
 |-------|-------|----------|
-| LoginTests | 3 | POST /auth/login |
+| LoginTests | 5 | POST /auth/login |
 | AuthMeTests | 2 | GET /auth/me |
 | RefreshTokenTests | 3 | POST /auth/refresh |
 | ProductTests | 7 | GET/POST/PUT/DELETE /products |
-| **Total** | **15** | |
+| **Total** | **17** | |
 
 ## Project Structure
 
