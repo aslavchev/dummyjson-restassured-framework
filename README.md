@@ -35,8 +35,8 @@ mvn allure:serve
 | LoginTests | 5 | POST /auth/login |
 | AuthMeTests | 2 | GET /auth/me |
 | RefreshTokenTests | 3 | POST /auth/refresh |
-| ProductTests | 8 | GET/POST/PUT/DELETE /products |
-| **Total** | **18** | |
+| ProductTests | 11 | GET/POST/PUT/DELETE /products |
+| **Total** | **21** | |
 
 ## Project Structure
 

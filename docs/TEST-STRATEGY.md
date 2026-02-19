@@ -22,24 +22,25 @@ This document outlines the test strategy for the DummyJSON REST Assured Framewor
 | `/auth/me` | GET | 2 | Valid token returns user data, missing token returns 401 |
 | `/auth/refresh` | POST | 3 | Valid refresh returns new tokens, invalid token returns 403, refreshed token is usable |
 
-### Products (8 tests)
+### Products (11 tests)
 
 | Endpoint | Method | Tests | What's Verified |
 |----------|--------|-------|-----------------|
 | `/products` | GET | 1 | Returns product list with total count |
+| `/products?limit&skip` | GET | 3 | Data-driven pagination via @DataProvider (first page, middle page, beyond total) |
 | `/products/{id}` | GET | 2 | Valid ID returns product, invalid ID returns 404 |
 | `/products/search` | GET | 2 | Search returns matching products; search with no results returns empty array |
 | `/products/add` | POST | 1 | Create returns 201 with product data |
 | `/products/{id}` | PUT | 1 | Update returns 200 with modified fields |
 | `/products/{id}` | DELETE | 1 | Delete returns 200 with isDeleted flag |
 
-**Total: 18 tests across 4 test classes**
+**Total: 21 tests across 4 test classes**
 
 ## What's Tested
 
 - **Happy path** — valid login, valid tokens, successful CRUD
 - **Token lifecycle** — login, refresh, and proof that refreshed tokens work on protected endpoints
-- **Data-driven testing** — login negative scenarios via @DataProvider (wrong credentials, empty username, empty password)
+- **Data-driven testing** — login negative scenarios and pagination via @DataProvider
 - **Error handling** — invalid credentials, missing tokens, invalid refresh tokens, non-existent resources
 - **Response structure** — status codes, field presence, correct values
 - **HTTP methods** — GET, POST, PUT, DELETE
@@ -50,7 +51,7 @@ This document outlines the test strategy for the DummyJSON REST Assured Framewor
 |-----|--------|
 | **Data persistence** | DummyJSON simulates CRUD — POST/PUT/DELETE return expected responses but don't modify the database. Tests validate response structure, not database state |
 | **Rate limiting** | Not relevant for a demo API |
-| **Pagination** | Products endpoint supports pagination parameters but not currently tested |
+| **Pagination edge cases** | Basic pagination tested (first page, middle page, beyond total); sorting and field selection (`select` param) not tested |
 | **Performance / load** | Requires separate tooling, different skill set |
 | **Schema validation** | Considered but not implemented — would require maintaining JSON schema files |
 

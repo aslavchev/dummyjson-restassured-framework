@@ -17,7 +17,7 @@ Each test obtains its own fresh token by calling `authClient.getAccessToken()`. 
 - **Test independence** — no test depends on another test's token. Tests can run in any order
 - **Simple and explicit** — the Arrange step of each test shows exactly how it gets its token. No hidden setup
 - **Matches the Selenium pattern** — each Selenium test gets a fresh browser session. Each API test gets a fresh token. Same principle: start clean
-- **12 tests total** — the performance cost of an extra login call per test is negligible at this scale
+- **21 tests total** — the performance cost of an extra login call per test is negligible at this scale
 
 ## Consequences
 
