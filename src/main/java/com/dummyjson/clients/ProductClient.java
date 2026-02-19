@@ -54,8 +54,9 @@ public class ProductClient {
     public Response searchProducts(String query) {
         return given()
                 .spec(requestSpec)
+                .queryParam("q", query)
             .when()
-                .get(Endpoints.PRODUCTS + "/search?q=" + query);
+                .get(Endpoints.PRODUCTS + "/search");
     }
 
     /**
@@ -95,5 +96,20 @@ public class ProductClient {
                 .spec(requestSpec)
             .when()
                 .delete(Endpoints.PRODUCTS + "/" + id);
+    }
+
+    /**
+     * @param limit items per page
+     * @param skip items (offset)
+     * @return Response from GET /products?limit={limit}&skip={skip}
+     */
+    @Step("Get products with limit: {limit}, skip: {skip}")
+    public Response getProducts(int limit, int skip) {
+        return given()
+                .spec(requestSpec)
+                .queryParam("limit", limit)
+                .queryParam("skip", skip)
+            .when()
+                .get(Endpoints.PRODUCTS);
     }
 }
