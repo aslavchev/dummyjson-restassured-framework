@@ -4,6 +4,7 @@ import com.dummyjson.clients.ProductClient;
 import com.dummyjson.models.Product;
 import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.Matchers.*;
@@ -119,5 +120,34 @@ public class ProductTests extends BaseApiTest {
                 .statusCode(200)
                 .body("id", equalTo(MUTABLE_PRODUCT_ID))
                 .body("isDeleted", equalTo(true));
+    }
+    /**
+     * Test data for pagination scenarios: {limit, skip, expectedSize, expectedLimit}.
+     */
+    @DataProvider(name = "paginationData")
+    public Object[][] paginationData() {
+        return new Object[][] {
+                {5, 0, 5, 5},      // first page
+                {5, 10, 5, 5},     // middle page
+                {5, 9999, 0, 0},   // beyond total
+        };
+    }
+
+    /**
+     * @param limit items per page
+     * @param skip items to skip (offset)
+     * @param expectedSize expected number of returned products
+     * @param expectedLimit expected limit in response
+     */
+    @Test(dataProvider = "paginationData", groups = {"regression"})
+    @Description("Verify pagination with limit and skip returns correct subset")
+    public void testGetProductsPaginationReturnsCorrectSubset(int limit, int skip, int expectedSize, int expectedLimit) {
+        // Act & Assert
+        productClient.getProducts(limit, skip)
+        .then()
+                .statusCode(200)
+                .body("limit", equalTo(expectedLimit))
+                .body("skip", equalTo(skip))
+                .body("products.size()", equalTo(expectedSize));
     }
 }
