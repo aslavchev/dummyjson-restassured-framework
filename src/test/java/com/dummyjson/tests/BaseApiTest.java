@@ -9,10 +9,7 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Listeners;
 
 /**
@@ -22,20 +19,11 @@ import org.testng.annotations.Listeners;
 @Listeners({TestListener.class})
 public class BaseApiTest {
 
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     protected RequestSpecification requestSpec;
-
-    @Step("Initialize API configuration")
-    @BeforeSuite(alwaysRun = true)
-    public void setupSuite() {
-        ApiConfig.logConfiguration();
-    }
 
     @Step("Configure REST Assured")
     @BeforeClass(alwaysRun = true)
     public void setupClass() {
-        logger.info("Setting up REST Assured...");
-
         RestAssured.baseURI = ApiConfig.getBaseUrl();
 
         RequestSpecBuilder builder = new RequestSpecBuilder()
@@ -48,7 +36,5 @@ public class BaseApiTest {
         }
 
         requestSpec = builder.build();
-
-        logger.info("Base URL: {}", ApiConfig.getBaseUrl());
     }
 }

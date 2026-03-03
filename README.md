@@ -15,10 +15,7 @@ API test automation framework for [DummyJSON](https://dummyjson.com/) using REST
 git clone https://github.com/aslavchev/dummyjson-restassured-framework.git
 cd dummyjson-restassured-framework
 
-# Configure credentials
-cp .env.example .env
-
-# Run tests
+# Run tests (uses public DummyJSON credentials by default)
 mvn clean test
 
 # Run smoke tests only
@@ -78,26 +75,12 @@ src/
 
 ## Configuration
 
-Create a `.env` file from the example:
+Tests use public DummyJSON credentials (`emilys` / `emilyspass`) by default. Override via environment variables if needed:
 
 ```bash
-cp .env.example .env
-```
-
-Required variables:
-
-```env
-API_USERNAME=emilys
-API_PASSWORD=emilyspass
-```
-
-Optional overrides:
-
-```env
-API_BASE_URL=https://dummyjson.com
-API_CONNECTION_TIMEOUT=10000
-API_READ_TIMEOUT=10000
-API_LOG_REQUESTS=true
+export API_USERNAME=emilys
+export API_PASSWORD=emilyspass
+export API_BASE_URL=https://dummyjson.com
 ```
 
 ## Test Users
